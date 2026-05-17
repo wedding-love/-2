@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Wedding Invitation</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #e5e5e5;
+            display: flex;
+            justify-content: center;
+            font-family: 'Playfair Display', serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .invite-wrapper {
+            width: 100%;
+            max-width: 430px;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .invite-wrapper.loaded {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .hero-screen {
+            width: 100%;
+            height: 100vh;
+            height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .header-section {
+            background-color: #ffffff;
+            width: 100%;
+            padding-bottom: 15px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .pearls-decoration {
+            width: 100%;
+            height: 90px;
+            background-size: contain;
+            background-position: top center;
+            background-repeat: no-repeat;
+            margin-bottom: 10px;
+        }
+
+        .typography-container {
+            padding-left: 35px;
+        }
+
+        .row-top {
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .name-main {
+            font-size: 3.2rem;
+            line-height: 0.9;
+            color: #000000;
+            font-weight: 400;
+            letter-spacing: -1px;
+        }
+
+        .wedding-day-block {
+            display: flex;
+            flex-direction: column;
+            margin-left: 15px;
+            margin-top: 6px;
+        }
+
+        .wedding-day-text {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            line-height: 1.3;
+            color: #000000;
+        }
+
+        .row-bottom {
+            margin-top: 5px;
+        }
+
+        .photo-background {
+            width: 100%;
+            flex-grow: 1;
+            background-image: url('пара.png');
+            background-size: cover;
+            background-position: center top;
+            background-repeat: no-repeat;
+            position: relative;
+            margin-top: -15px;
+            z-index: 1;
+        }
+
+        .photo-background::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 40px;
+            background: linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%);
+            pointer-events: none;
+        }
+
+        .audio-player-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 60px 35px 30px 35px;
+            background-color: #ffffff;
+            position: relative;
+            z-index: 2;
+        }
+
+        .play-btn {
+            width: 50px;
+            height: 50px;
+            background-color: #000000;
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.2s ease, background-color 0.2s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .play-btn:active {
+            transform: scale(0.95);
+        }
+
+        .play-btn svg {
+            width: 18px;
+            height: 18px;
+            fill: #ffffff;
+            transition: all 0.3s ease;
+        }
+
+        .player-status-text {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.68rem;
+            font-weight: 400;
+            color: #555555;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-top: 16px;
+            text-align: center;
+            line-height: 1.5;
+            transition: color 0.3s ease;
+        }
+
+        .parents-invitation-container {
+            background-color: #ffffff;
+            padding: 40px 35px 60px 35px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .parents-title {
+            font-size: 1.6rem;
+            text-transform: uppercase;
+            color: #1a1a1a;
+            font-weight: 400;
+            letter-spacing: 0.05em;
+            margin-bottom: 25px;
+            line-height: 1.3;
+        }
+
+        .parents-text {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem;
+            color: #555555;
+            line-height: 1.8;
+            max-width: 320px;
+            margin-bottom: 45px;
+            font-weight: 400;
+        }
+
+        .big-date-block {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 200px;
+            margin: 0 auto;
+        }
+
+        .date-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+
+        .big-number {
+            font-size: 5.5rem;
+            font-weight: 400;
+            line-height: 0.9;
+            color: #1a1a1a;
+            letter-spacing: -1px;
+        }
+
+        .date-divider-line {
+            width: 100%;
+            height: 1px;
+            background-color: #1a1a1a;
+            margin: 12px 0;
+            opacity: 0.25;
+        }
+
+        .date-month-text {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 400;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: #1a1a1a;
+            margin: 4px 0;
+        }
+
+        .date-year {
+            font-size: 2.2rem;
+            font-weight: 400;
+            letter-spacing: 4px;
+            color: #1a1a1a;
+            line-height: 1;
+            margin-top: 5px;
+            padding-left: 4px;
+        }
+
+        /* === ТАЙМИНГ (ВСЕГДА РАСКРЫТ) === */
+        .timeline-container {
+            background-color: #ffffff;
+            padding: 60px 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .timeline-title {
+            font-size: 1.6rem;
+            text-transform: uppercase;
+            color: #1a1a1a;
+            font-weight: 400;
+            letter-spacing: 0.05em;
+            margin-bottom: 45px;
+            text-align: center;
+        }
+
+        .timeline {
+            position: relative;
+            width: 100%;
+            max-width: 340px;
+            padding-left: 30px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 5px;
+            top: 10px;
+            bottom: 10px;
+            width: 1px;
+            background: linear-gradient(to bottom, #1a1a1a 0%, #1a1a1a 80%, rgba(26,26,26,0.1) 100%);
+            opacity: 0.15;
+        }
+
+        /* Каждый элемент тайминга — отдельный reveal-блок */
+        .timeline-item {
+            position: relative;
+            margin-bottom: 30px;
+            opacity: 0;
+            transform: translateX(-30px);
+            transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            will-change: opacity, transform;
+        }
+
+        .timeline-item.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: -30px;
+            top: 6px;
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+            background-color: #1a1a1a;
+            border: 1px solid #1a1a1a;
+            z-index: 2;
+        }
+
+        .timeline-content {
+            transform: translateX(0);
+        }
+
+        .timeline-time {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            color: #000000;
+            margin-bottom: 4px;
+        }
+
+        .timeline-event {
+            font-size: 1.15rem;
+            font-weight: 400;
+            color: #1a1a1a;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Описание всегда видно */
+        .timeline-desc {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.8rem;
+            color: #666666;
+            line-height: 1.5;
+            margin-top: 8px;
+            max-height: none;
+            opacity: 1;
+            overflow: visible;
+        }
+
+        .location-container {
+            background-color: #e5e5e5;
+            padding: 60px 35px 30px 35px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .location-title {
+            font-size: 1.6rem;
+            text-transform: uppercase;
+            color: #1a1a1a;
+            font-weight: 400;
+            letter-spacing: 0.05em;
+            margin-bottom: 25px;
+            line-height: 1.3;
+        }
+
+        .location-image-wrapper {
+            width: 100%;
+            height: 220px;
+            background-image: url('ресторан.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            border-radius: 2px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+        }
+
+        .location-name {
+            font-size: 1.25rem;
+            color: #1a1a1a;
+            font-weight: 400;
+            margin-bottom: 8px;
+        }
+
+        .location-address {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.8rem;
+            color: #666666;
+            line-height: 1.6;
+            max-width: 280px;
+            margin-bottom: 30px;
+            font-weight: 400;
+            letter-spacing: 0.02em;
+        }
+
+        .map-button {
+            display: inline-block;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #ffffff;
+            background-color: #1a1a1a;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            padding: 16px 32px;
+            border-radius: 2px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .map-button:active {
+            transform: scale(0.98);
+            background-color: #333333;
+        }
+
+        .dresscode-container {
+            background-color: #e5e5e5;
+            padding: 40px 35px 70px 35px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .dresscode-title {
+            font-size: 1.6rem;
+            text-transform: uppercase;
+            color: #1a1a1a;
+            font-weight: 400;
+            letter-spacing: 0.05em;
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+
+        .dresscode-text {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem;
+            color: #555555;
+            line-height: 1.7;
+            max-width: 320px;
+            margin-bottom: 35px;
+            font-weight: 400;
+        }
+
+        .palette-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .color-circle {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease;
+        }
+
+        .color-circle:active {
+            transform: scale(1.1);
+        }
+
+        .color-blue {
+            background-color: #a4b9cb;
+        }
+
+        .color-rose {
+            background-color: #cca4a4;
+        }
+
+        .color-brown {
+            background-color: #70584e;
+        }
+
+        .color-black {
+            background-color: #1a1a1a;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* ========================================== */
+        /* === АНКЕТА ГОСТЯ (ИДЁТ ПЕРЕД ТАЙМЕРОМ) === */
+        /* ========================================== */
+        .questionnaire-container {
+            background-color: #ffffff;
+            padding: 60px 35px 80px 35px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .questionnaire-title {
+            font-size: 1.6rem;
+            text-transform: uppercase;
+            color: #1a1a1a;
+            font-weight: 400;
+            letter-spacing: 0.05em;
+            margin-bottom: 15px;
+        }
+
+        .questionnaire-subtitle {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.8rem;
+            color: #888888;
+            margin-bottom: 40px;
+            line-height: 1.5;
+        }
+
+        .questionnaire-form {
+            width: 100%;
+            max-width: 350px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+        }
+
+        .form-label {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+        }
+
+        .form-input, .form-select, .form-textarea {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+            padding: 12px 16px;
+            border: 1px solid #e0e0e0;
+            border-radius: 2px;
+            background-color: #fafafa;
+            color: #1a1a1a;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            border-color: #1a1a1a;
+            box-shadow: 0 0 0 2px rgba(26, 26, 26, 0.05);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-select {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12"><path d="M6 8L1 3h10z" fill="%231a1a1a" fill-opacity="0.5"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            padding-right: 40px;
+        }
+
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .radio-option input[type="radio"] {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border: 1px solid #cccccc;
+            border-radius: 50%;
+            position: relative;
+            cursor: pointer;
+            transition: border-color 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .radio-option input[type="radio"]:checked {
+            border-color: #1a1a1a;
+        }
+
+        .radio-option input[type="radio"]:checked::after {
+            content: '';
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            width: 8px;
+            height: 8px;
+            background-color: #1a1a1a;
+            border-radius: 50%;
+        }
+
+        .radio-label {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem;
+            color: #333333;
+        }
+
+        .submit-btn {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #ffffff;
+            background-color: #1a1a1a;
+            border: none;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            padding: 16px 32px;
+            border-radius: 2px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        .submit-btn:active {
+            transform: scale(0.98);
+            background-color: #333333;
+        }
+
+        .thank-you-message {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .thank-you-message.show {
+            display: block;
+        }
+
+        .thank-you-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .thank-you-text {
+            font-size: 1.4rem;
+            color: #1a1a1a;
+            margin-bottom: 10px;
+        }
+
+        .thank-you-sub {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.8rem;
+            color: #888888;
+        }
+
+        /* =========================================== */
+        /* === ТАЙМЕР ОБРАТНОГО ОТСЧЕТА (ПОСЛЕ АНКЕТЫ) === */
+        /* =========================================== */
+        .countdown-container {
+            background-color: #ffffff;
+            padding: 80px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .countdown-title {
+            font-size: 1.6rem;
+            text-transform: uppercase;
+            color: #1a1a1a;
+            font-weight: 400;
+            letter-spacing: 0.05em;
+            margin-bottom: 40px;
+        }
+
+        /* КЛЮЧЕВОЕ: таймер всегда в одну строку */
+        .countdown-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: nowrap; /* ЗАПРЕЩАЕМ ПЕРЕНОС */
+            width: 100%;
+            max-width: 370px;
+            margin: 0 auto;
+        }
+
+        .countdown-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 55px;
+            flex-shrink: 0;
+        }
+
+        .countdown-number {
+            font-size: 2.8rem;
+            font-weight: 400;
+            line-height: 1;
+            color: #1a1a1a;
+            letter-spacing: -1px;
+        }
+
+        .countdown-label {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.55rem;
+            font-weight: 400;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: #888888;
+            margin-top: 8px;
+        }
+
+        .countdown-separator {
+            font-size: 1.6rem;
+            color: #cccccc;
+            margin-bottom: 18px;
+            flex-shrink: 0;
+        }
+
+        .countdown-message {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem;
+            color: #555555;
+            margin-top: 40px;
+            line-height: 1.6;
+        }
+
+        /* ========================================== */
+        /* === АНИМАЦИЯ ПОЯВЛЕНИЯ БЛОКОВ ПРИ СКРОЛЛЕ === */
+        /* ========================================== */
+        .reveal-block {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 1s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            will-change: opacity, transform;
+        }
+
+        .reveal-block.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Адаптивность таймера для самых маленьких экранов */
+        @media screen and (max-width: 360px) {
+            .countdown-row {
+                gap: 4px;
+            }
+            .countdown-item {
+                min-width: 45px;
+            }
+            .countdown-number {
+                font-size: 2.2rem;
+            }
+            .countdown-separator {
+                font-size: 1.2rem;
+                margin-bottom: 14px;
+            }
+            .countdown-label {
+                font-size: 0.5rem;
+                letter-spacing: 0.05em;
+            }
+        }
+
+        @media screen and (min-width: 380px) and (max-width: 430px) {
+            .countdown-number {
+                font-size: 3rem;
+            }
+            .countdown-item {
+                min-width: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="invite-wrapper" id="inviteContainer">
+        
+        <!-- ПЕРВЫЙ ЭКРАН -->
+        <div class="hero-screen reveal-block" id="heroBlock">
+            <div class="header-section">
+                <div class="pearls-decoration"></div>
+                
+                <div class="typography-container">
+                    <div class="row-top">
+                        <h1 class="name-main">VLAD</h1>
+                        <div class="wedding-day-block">
+                            <span class="wedding-day-text">WEDDING</span>
+                            <span class="wedding-day-text">DAY</span>
+                        </div>
+                    </div>
+                    <div class="row-bottom">
+                        <h1 class="name-main">& NASTYA</h1>
+                    </div>
+                </div>
+            </div>
+
+            <div class="photo-background"></div>
+        </div>
+
+        <!-- МУЗЫКАЛЬНЫЙ ПЛЕЕР -->
+        <div class="audio-player-container reveal-block" id="audioBlock">
+            <button class="play-btn" id="audioBtn" aria-label="Включить музыку">
+                <svg id="playerIcon" viewBox="0 0 24 24">
+                    <path id="iconPath" d="M8 5v14l11-7z"/>
+                </svg>
+            </button>
+            <p class="player-status-text" id="playerText">Почувствуйте атмосферу нашего праздника</p>
+        </div>
+
+        <!-- ПРИГЛАШЕНИЕ ДЛЯ РОДИТЕЛЕЙ -->
+        <div class="parents-invitation-container reveal-block" id="parentsBlock">
+            <h2 class="parents-title">Дорогие<br>родные и любимые!</h2>
+            
+            <p class="parents-text">
+                С огромной радостью и большой любовью приглашаем вас разделить с нами трогательный и важный момент нашей жизни — день нашей свадьбы!
+            </p>
+
+            <div class="big-date-block">
+                <div class="date-row">
+                    <div class="big-number">09</div>
+                </div>
+                
+                <div class="date-divider-line"></div>
+                
+                <div class="date-month-text">СЕНТЯБРЬ</div>
+                
+                <div class="date-divider-line"></div>
+                
+                <div class="date-row">
+                    <div class="date-year">2026</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ТАЙМИНГ (КАЖДЫЙ БЛОК С АНИМАЦИЕЙ) -->
+        <div class="timeline-container" id="timelineBlock">
+            <h2 class="timeline-title reveal-block">Программа дня</h2>
+            
+            <div class="timeline">
+                <!-- Событие 1 -->
+                <div class="timeline-item reveal-block" id="timelineItem1">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-time">16:00</div>
+                        <div class="timeline-event">
+                            <span>Сбор гостей</span>
+                        </div>
+                        <div class="timeline-desc">Приветственный фуршет, легкая музыка, встреча дорогих близких и знакомство гостей.</div>
+                    </div>
+                </div>
+
+                <!-- Событие 2 -->
+                <div class="timeline-item reveal-block" id="timelineItem2">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-time">16:30</div>
+                        <div class="timeline-event">
+                            <span>Церемония</span>
+                        </div>
+                        <div class="timeline-desc">Самый важный и трогательный момент нашего дня. Время сказать главные слова.</div>
+                    </div>
+                </div>
+
+                <!-- Событие 3 -->
+                <div class="timeline-item reveal-block" id="timelineItem3">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-time">17:30</div>
+                        <div class="timeline-event">
+                            <span>Свадебный ужин</span>
+                        </div>
+                        <div class="timeline-desc">Праздничный банкет, поздравления, приятные сюрпризы и прекрасная атмосфера.</div>
+                    </div>
+                </div>
+
+                <!-- Событие 4 -->
+                <div class="timeline-item reveal-block" id="timelineItem4">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-time">20:00</div>
+                        <div class="timeline-event">
+                            <span>Танцы & Торт</span>
+                        </div>
+                        <div class="timeline-desc">Зажигательная музыкальная программа, разрезание праздничного торта и яркий финал вечера.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- МЕСТО ПРОВЕДЕНИЯ -->
+        <div class="location-container reveal-block" id="locationBlock">
+            <h2 class="location-title">Место проведения</h2>
+            
+            <div class="location-image-wrapper"></div>
+            
+            <h3 class="location-name">Ресторан «Вилла Парк»</h3>
+            <p class="location-address">г. Москва, ул. Лесная, д. 25, стр. 1<br>(Загородный комплекс)</p>
+            
+            <a href="https://maps.yandex.ru" target="_blank" class="map-button">Посмотреть на карте</a>
+        </div>
+
+        <!-- ДРЕСС-КОД -->
+        <div class="dresscode-container reveal-block" id="dresscodeBlock">
+            <h2 class="dresscode-title">Дресс-код</h2>
+            <p class="dresscode-text">
+                Мы будем очень рады, если вы поддержите атмосферу нашего праздника и выберете наряды в соответствии с нашей свадебной палитрой:
+            </p>
+            <div class="palette-wrapper">
+                <div class="color-circle color-blue" title="Голубой"></div>
+                <div class="color-circle color-rose" title="Пыльная роза"></div>
+                <div class="color-circle color-brown" title="Коричневый"></div>
+                <div class="color-circle color-black" title="Черный"></div>
+            </div>
+        </div>
+
+        <!-- ======================== -->
+        <!-- АНКЕТА ГОСТЯ (ПЕРЕД ТАЙМЕРОМ) -->
+        <!-- ======================== -->
+        <div class="questionnaire-container reveal-block" id="questionnaireBlock">
+            <h2 class="questionnaire-title">Анкета гостя</h2>
+            <p class="questionnaire-subtitle">Пожалуйста, заполните небольшую анкету — это поможет нам сделать праздник уютнее для каждого</p>
+            
+            <form class="questionnaire-form" id="guestForm">
+                <div class="form-group">
+                    <label class="form-label" for="guestName">Ваше имя и фамилия</label>
+                    <input type="text" id="guestName" class="form-input" placeholder="Иван Иванов" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Сможете ли вы присутствовать?</label>
+                    <div class="radio-group">
+                        <label class="radio-option">
+                            <input type="radio" name="attendance" value="yes" required>
+                            <span class="radio-label">Да, обязательно буду</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="attendance" value="maybe">
+                            <span class="radio-label">Постараюсь, но пока не уверен(а)</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="attendance" value="no">
+                            <span class="radio-label">К сожалению, не смогу</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="guestCount">Сколько вас будет человек?</label>
+                    <select id="guestCount" class="form-select" required>
+                        <option value="" disabled selected>Выберите количество</option>
+                        <option value="1">1 (только я)</option>
+                        <option value="2">2 (я и спутник/спутница)</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Какие напитки предпочитаете?</label>
+                    <div class="radio-group">
+                        <label class="radio-option">
+                            <input type="radio" name="drink" value="wine" required>
+                            <span class="radio-label">Вино / Шампанское</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="drink" value="strong">
+                            <span class="radio-label">Крепкие напитки</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="drink" value="non-alcoholic">
+                            <span class="radio-label">Безалкогольные напитки</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="drink" value="all">
+                            <span class="radio-label">Всё понемногу</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="foodPref">Особенности питания / Аллергии</label>
+                    <textarea id="foodPref" class="form-textarea" placeholder="Например: вегетарианец, аллергия на орехи, не ем рыбу..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="wishes">Ваши пожелания молодым</label>
+                    <textarea id="wishes" class="form-textarea" placeholder="Напишите пару тёплых слов..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="songRequest">Какую песню вы хотели бы услышать?</label>
+                    <input type="text" id="songRequest" class="form-input" placeholder="Название песни и исполнитель">
+                </div>
+
+                <button type="submit" class="submit-btn">Отправить анкету</button>
+            </form>
+
+            <div class="thank-you-message" id="thankYouMessage">
+                <div class="thank-you-text">Спасибо за ответы!</div>
+                <div class="thank-you-sub">Мы учтём все ваши пожелания. До встречи на празднике!</div>
+            </div>
+        </div>
+
+        <!-- ======================== -->
+        <!-- ТАЙМЕР ОТСЧЕТА (ПОСЛЕ АНКЕТЫ) -->
+        <!-- ======================== -->
+        <div class="countdown-container reveal-block" id="countdownBlock">
+            <h2 class="countdown-title">До свадьбы осталось</h2>
+            
+            <!-- Всегда в одну строку на всех устройствах -->
+            <div class="countdown-row">
+                <div class="countdown-item">
+                    <div class="countdown-number" id="countdownDays">00</div>
+                    <div class="countdown-label">Дней</div>
+                </div>
+                <div class="countdown-separator">:</div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="countdownHours">00</div>
+                    <div class="countdown-label">Часов</div>
+                </div>
+                <div class="countdown-separator">:</div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="countdownMinutes">00</div>
+                    <div class="countdown-label">Минут</div>
+                </div>
+                <div class="countdown-separator">:</div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="countdownSeconds">00</div>
+                    <div class="countdown-label">Секунд</div>
+                </div>
+            </div>
+            
+            <p class="countdown-message" id="countdownMessage">
+                Мы с нетерпением ждём этого дня и будем счастливы видеть вас!
+            </p>
+        </div>
+
+        <audio id="bgMusic" src="music.mp3" loop></audio>
+
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const container = document.getElementById('inviteContainer');
+            setTimeout(() => {
+                container.classList.add('loaded');
+            }, 100);
+
+            // --- МУЗЫКА ---
+            const music = document.getElementById('bgMusic');
+            const audioBtn = document.getElementById('audioBtn');
+            const iconPath = document.getElementById('iconPath');
+            const playerText = document.getElementById('playerText');
+
+            const playPath = "M8 5v14l11-7z";
+            const pausePath = "M6 19h4V5H6v14zm8-14v14h4V5h-4z";
+
+            audioBtn.addEventListener('click', () => {
+                if (music.paused) {
+                    music.play().then(() => {
+                        iconPath.setAttribute('d', pausePath);
+                        playerText.style.color = '#000000';
+                        playerText.textContent = 'Вы погружаетесь в нашу атмосферу';
+                    }).catch(error => {
+                        console.log("Воспроизведение заблокировано браузером.", error);
+                    });
+                } else {
+                    music.pause();
+                    iconPath.setAttribute('d', playPath);
+                    playerText.style.color = '#555555';
+                    playerText.textContent = 'Музыка на паузе. Включите, чтобы почувствовать атмосферу';
+                }
+            });
+
+            // --- АНИМАЦИЯ ПОЯВЛЕНИЯ БЛОКОВ ПРИ СКРОЛЛЕ ---
+            const revealBlocks = document.querySelectorAll('.reveal-block');
+            
+            function checkVisibility() {
+                revealBlocks.forEach(block => {
+                    const blockTop = block.getBoundingClientRect().top;
+                    const windowHeight = window.innerHeight;
+                    
+                    if (blockTop < windowHeight * 0.85) {
+                        block.classList.add('visible');
+                    }
+                });
+            }
+
+            checkVisibility();
+            window.addEventListener('scroll', checkVisibility);
+
+            // Первый блок сразу видим
+            document.getElementById('heroBlock').classList.add('visible');
+
+            // --- ТАЙМЕР ОБРАТНОГО ОТСЧЕТА (ПОСЛЕ АНКЕТЫ) ---
+            const weddingDate = new Date(2026, 8, 9, 16, 0, 0); // 9 сентября 2026, 16:00
+            
+            const daysEl = document.getElementById('countdownDays');
+            const hoursEl = document.getElementById('countdownHours');
+            const minutesEl = document.getElementById('countdownMinutes');
+            const secondsEl = document.getElementById('countdownSeconds');
+            const countdownMessage = document.getElementById('countdownMessage');
+
+            function updateCountdown() {
+                const now = new Date();
+                const diff = weddingDate - now;
+
+                if (diff <= 0) {
+                    daysEl.textContent = '00';
+                    hoursEl.textContent = '00';
+                    minutesEl.textContent = '00';
+                    secondsEl.textContent = '00';
+                    countdownMessage.textContent = ' Сегодня самый счастливый день! ';
+                    return;
+                }
+
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                daysEl.textContent = days < 10 ? '0' + days : days;
+                hoursEl.textContent = hours < 10 ? '0' + hours : hours;
+                minutesEl.textContent = minutes < 10 ? '0' + minutes : minutes;
+                secondsEl.textContent = seconds < 10 ? '0' + seconds : seconds;
+            }
+
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+
+            // --- ОБРАБОТКА АНКЕТЫ ---
+            const guestForm = document.getElementById('guestForm');
+            const thankYouMessage = document.getElementById('thankYouMessage');
+
+            guestForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+                
+                const formData = {
+                    name: document.getElementById('guestName').value,
+                    attendance: document.querySelector('input[name="attendance"]:checked')?.value || 'не указано',
+                    guestCount: document.getElementById('guestCount').value,
+                    drink: document.querySelector('input[name="drink"]:checked')?.value || 'не указано',
+                    foodPref: document.getElementById('foodPref').value || 'не указано',
+                    wishes: document.getElementById('wishes').value || 'не указано',
+                    songRequest: document.getElementById('songRequest').value || 'не указано'
+                };
+
+                console.log('Данные анкеты:', formData);
+                
+                guestForm.style.display = 'none';
+                thankYouMessage.classList.add('show');
+            });
+        });
+    </script>
+
+</body>
+</html>
